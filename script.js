@@ -5,6 +5,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 450;
 canvas.height = 450;
 const cell = 30;
+let score = 0;
 
 function drawBoard() {
     ctx.strokeRect(0,0,canvas.width,canvas.height);
@@ -40,14 +41,13 @@ function getUrlFood() {
         return "images/cheese.png";
     }
 }
-const foodCoord = {
+let foodCoord = {
     x: Math.floor(Math.random() * 15) * cell,
     y: Math.floor(Math.random() * 15) * cell
 }
 function drawFood() {
     ctx.drawImage(food, foodCoord.x, foodCoord.y);
 }
-
 
 
 let snake = [{ x: 7 * cell, y: 7 * cell}];
@@ -58,6 +58,9 @@ snakeImgHead.src = "images/snake-head.png";
 snakeImgHead.onload = function () {
     ctx.drawImage(snakeImgHead, snake[0].x, snake[0].y);
 }
+
+const snakeImgBody = new Image();
+snakeImgBody.src = "images/snake-body.png";
 
 
 document.addEventListener("keydown", where)
@@ -89,16 +92,56 @@ function drawGame() {
     if (whereMove === "up") {snakeHeadY -= cell}
     if (whereMove === "down") {snakeHeadY += cell}
 
-    snake.unshift({
-        x: snakeHeadX,
-        y: snakeHeadY
-    });
+    if (snakeHeadX < 0 || snakeHeadY < 0 || snakeHeadX >= 450 || snakeHeadY >= 450) {
+        clearInterval(game);
+        for (let i = 0; i < snake.length; i++ ) {
+            if ( i === 0) {
+                ctx.drawImage(snakeImgHead, snake[0].x, snake[0].y);
+            }
+            if ( i !== 0) {
+                ctx.drawImage(snakeImgBody, snake[i].x, snake[i].y);
+            }
+        }
+        return;
+    }
 
+    for ( let i = 1; i < snake.length; i++ ) {
+        if (snakeHeadX === snake[i].x && snakeHeadY === snake[i].y ) {
+            clearInterval(game);
+            for (let i = 0; i < snake.length; i++ ) {
+                if ( i === 0) {
+                    ctx.drawImage(snakeImgHead, snake[0].x, snake[0].y);
+                }
+                if ( i !== 0) {
+                    ctx.drawImage(snakeImgBody, snake[i].x, snake[i].y);
+                }
+            }
+            return;
+        }
+    }
+
+    if (snakeHeadX === foodCoord.x && snakeHeadY === foodCoord.y) {
+        score++;
+        snake.unshift({x: snakeHeadX, y: snakeHeadY});
+        food.src = getUrlFood();
+        foodCoord = {
+            x: Math.floor(Math.random() * 15) * cell,
+            y: Math.floor(Math.random() * 15) * cell }
+    } else {
+    snake.unshift({x: snakeHeadX, y: snakeHeadY});
     snake.pop();
+    }
 
-    ctx.drawImage(snakeImgHead, snake[0].x, snake[0].y);
+    for (let i = 0; i < snake.length; i++ ) {
+        if ( i === 0) {
+                ctx.drawImage(snakeImgHead, snake[0].x, snake[0].y);
+        }
+        if ( i !== 0) {
+                ctx.drawImage(snakeImgBody, snake[i].x, snake[i].y);
+        }
+    }
 
 }
 
-let game = setInterval (drawGame, 200);
+let game = setInterval (drawGame, 100);
 
