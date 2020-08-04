@@ -122,11 +122,22 @@ function drawGame() {
 
     if (snakeHeadX === foodCoord.x && snakeHeadY === foodCoord.y) {
         score++;
+        document.querySelector(".score").textContent = `Счет: ${score}`;
+
         snake.unshift({x: snakeHeadX, y: snakeHeadY});
         food.src = getUrlFood();
-        foodCoord = {
-            x: Math.floor(Math.random() * 15) * cell,
-            y: Math.floor(Math.random() * 15) * cell }
+        headBody();
+        function headBody() {
+            foodCoord = {
+                x: Math.floor(Math.random() * 15) * cell,
+                y: Math.floor(Math.random() * 15) * cell
+            }
+            for ( let i = 1; i < snake.length; i++ ) {
+                if (foodCoord.x === snake[i].x && foodCoord.y === snake[i].y) {
+                    headBody()
+                }
+            }
+        }
     } else {
     snake.unshift({x: snakeHeadX, y: snakeHeadY});
     snake.pop();
@@ -143,5 +154,5 @@ function drawGame() {
 
 }
 
-let game = setInterval (drawGame, 100);
+let game = setInterval (drawGame, 120);
 
