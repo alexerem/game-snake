@@ -102,6 +102,7 @@ function drawGame() {
                 ctx.drawImage(snakeImgBody, snake[i].x, snake[i].y);
             }
         }
+        document.querySelector(".mask").style.display = 'flex';
         return;
     }
 
@@ -116,6 +117,7 @@ function drawGame() {
                     ctx.drawImage(snakeImgBody, snake[i].x, snake[i].y);
                 }
             }
+            document.querySelector(".mask").style.display = 'flex';
             return;
         }
     }

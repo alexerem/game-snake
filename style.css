@@ -2,6 +2,7 @@
 #snakeboard {
     width: 450px;
     height: 450px;
+    z-index: 1;
 }
 
 .container {
@@ -27,4 +28,32 @@
     font-weight: bold;
     font-size: 24px;
     color: aliceblue;
+}
+
+.mask {
+    width: 450px;
+    height: 450px;
+    background: rgba(102, 102, 102, 0.3);
+    position: absolute;
+    top: 123px;
+    z-index: 2;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.mask a {
+    text-decoration: none;
+    font-size: 26px;
+    width: 250px;
+    height: 70px;
+    background-color: #a0c9a2;
+    color: aliceblue;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 70px;
+}
+
+.mask a:hover {
+    background-color: #9ac19b;
 }
